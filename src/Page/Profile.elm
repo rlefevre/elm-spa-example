@@ -1,6 +1,9 @@
 module Page.Profile exposing (Model, Msg, init, subscriptions, toSession, update, view)
 
 {-| An Author's profile.
+
+@docs Model, Msg, init, subscriptions, toSession, update, view
+
 -}
 
 import Api exposing (Cred)
@@ -30,6 +33,7 @@ import Viewer exposing (Viewer)
 -- MODEL
 
 
+{-| -}
 type alias Model =
     { session : Session
     , timeZone : Time.Zone
@@ -55,6 +59,7 @@ type Status a
     | Failed Username
 
 
+{-| -}
 init : Session -> Username -> ( Model, Cmd Msg )
 init session username =
     let
@@ -142,6 +147,7 @@ articlesPerPage =
 -- VIEW
 
 
+{-| -}
 view : Model -> { title : String, content : Html Msg }
 view model =
     let
@@ -306,6 +312,7 @@ favoritedArticles =
 -- UPDATE
 
 
+{-| -}
 type Msg
     = ClickedDismissErrors
     | ClickedFollow Cred UnfollowedAuthor
@@ -321,6 +328,7 @@ type Msg
     | PassedSlowLoadThreshold
 
 
+{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -424,6 +432,7 @@ update msg model =
 -- SUBSCRIPTIONS
 
 
+{-| -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Session.changes GotSession (Session.navKey model.session)
@@ -433,6 +442,7 @@ subscriptions model =
 -- EXPORT
 
 
+{-| -}
 toSession : Model -> Session
 toSession model =
     model.session

@@ -12,9 +12,12 @@ what happened later."
 a placeholder anyway, I didn't bother making this function accept actual
 diagnostic info, authentication tokens, etc.)
 
+@docs error
+
 -}
 
 
+{-| -}
 error : Cmd msg
 error =
     Cmd.none

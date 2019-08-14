@@ -1,0 +1,42 @@
+{
+    "name": "rtfeldman/elm-spa-example",
+    "summary": "A Single Page Application written in Elm",
+    "version": "1.0.0",
+    "exposed-modules": [
+        "Api.Endpoint",
+        "Author",
+        "Profile",
+        "Avatar",
+        "Page",
+        "Viewer",
+        "Route",
+        "Session",
+        "Page.Profile",
+        "Page.Blank",
+        "Page.Settings",
+        "Page.Home",
+        "Page.Article",
+        "Page.Register",
+        "Page.NotFound",
+        "Page.Article.Editor",
+        "Page.Login",
+        "Username",
+        "PaginatedList",
+        "Log",
+        "CommentId",
+        "Article",
+        "Email",
+        "Asset",
+        "Timestamp",
+        "Main",
+        "Article.Body",
+        "Article.Feed",
+        "Article.Comment",
+        "Article.Slug",
+        "Article.Tag",
+        "Api",
+        "Loading"
+    ]
+}
+
+

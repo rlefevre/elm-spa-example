@@ -1,4 +1,11 @@
-module Article exposing (Article, Full, Preview, author, body, favorite, favoriteButton, fetch, fromPreview, fullDecoder, mapAuthor, metadata, previewDecoder, slug, unfavorite, unfavoriteButton)
+module Article exposing
+    ( Article, Full, Preview
+    , author, body, metadata, slug
+    , fromPreview, mapAuthor
+    , fullDecoder, previewDecoder
+    , fetch
+    , favorite, favoriteButton, unfavorite, unfavoriteButton
+    )
 
 {-| The interface to the Article data structure.
 
@@ -8,6 +15,36 @@ This includes:
   - Ways to make HTTP requests to retrieve and modify articles
   - Ways to access information about an article
   - Converting between various types
+
+
+# Types
+
+@docs Article, Full, Preview
+
+
+# Info
+
+@docs author, body, metadata, slug
+
+
+# Transform
+
+@docs fromPreview, mapAuthor
+
+
+# Serialization
+
+@docs fullDecoder, previewDecoder
+
+
+# Single
+
+@docs fetch
+
+
+# Favorite
+
+@docs favorite, favoriteButton, unfavorite, unfavoriteButton
 
 -}
 
@@ -110,10 +147,12 @@ type alias Internals =
     }
 
 
+{-| -}
 type Preview
     = Preview
 
 
+{-| -}
 type Full
     = Full Body
 
@@ -122,21 +161,25 @@ type Full
 -- INFO
 
 
+{-| -}
 author : Article a -> Author
 author (Article internals _) =
     internals.author
 
 
+{-| -}
 metadata : Article a -> Metadata
 metadata (Article internals _) =
     internals.metadata
 
 
+{-| -}
 slug : Article a -> Slug
 slug (Article internals _) =
     internals.slug
 
 
+{-| -}
 body : Article Full -> Body
 body (Article _ (Full extraInfo)) =
     extraInfo
@@ -159,6 +202,7 @@ mapAuthor transform (Article info extras) =
     Article { info | author = transform info.author } extras
 
 
+{-| -}
 fromPreview : Body -> Article Preview -> Article Full
 fromPreview newBody (Article info Preview) =
     Article info (Full newBody)
@@ -168,6 +212,7 @@ fromPreview newBody (Article info Preview) =
 -- SERIALIZATION
 
 
+{-| -}
 previewDecoder : Maybe Cred -> Decoder (Article Preview)
 previewDecoder maybeCred =
     Decode.succeed Article
@@ -175,6 +220,7 @@ previewDecoder maybeCred =
         |> hardcoded Preview
 
 
+{-| -}
 fullDecoder : Maybe Cred -> Decoder (Article Full)
 fullDecoder maybeCred =
     Decode.succeed Article
@@ -205,6 +251,7 @@ metadataDecoder =
 -- SINGLE
 
 
+{-| -}
 fetch : Maybe Cred -> Slug -> Http.Request (Article Full)
 fetch maybeCred articleSlug =
     Decode.field "article" (fullDecoder maybeCred)
@@ -215,11 +262,13 @@ fetch maybeCred articleSlug =
 -- FAVORITE
 
 
+{-| -}
 favorite : Slug -> Cred -> Http.Request (Article Preview)
 favorite articleSlug cred =
     Api.post (Endpoint.favorite articleSlug) (Just cred) Http.emptyBody (faveDecoder cred)
 
 
+{-| -}
 unfavorite : Slug -> Cred -> Http.Request (Article Preview)
 unfavorite articleSlug cred =
     Api.delete (Endpoint.favorite articleSlug) cred Http.emptyBody (faveDecoder cred)
@@ -246,6 +295,7 @@ favoriteButton _ msg attrs kids =
     toggleFavoriteButton "btn btn-sm btn-outline-primary" msg attrs kids
 
 
+{-| -}
 unfavoriteButton :
     Cred
     -> msg

@@ -1,6 +1,9 @@
 module Page.Article exposing (Model, Msg, init, subscriptions, toSession, update, view)
 
 {-| Viewing an individual article.
+
+@docs Model, Msg, init, subscriptions, toSession, update, view
+
 -}
 
 import Api exposing (Cred)
@@ -35,6 +38,7 @@ import Viewer exposing (Viewer)
 -- MODEL
 
 
+{-| -}
 type alias Model =
     { session : Session
     , timeZone : Time.Zone
@@ -58,6 +62,7 @@ type CommentText
     | Sending String
 
 
+{-| -}
 init : Session -> Slug -> ( Model, Cmd Msg )
 init session slug =
     let
@@ -85,6 +90,7 @@ init session slug =
 -- VIEW
 
 
+{-| -}
 view : Model -> { title : String, content : Html Msg }
 view model =
     case model.article of
@@ -307,6 +313,7 @@ viewComment timeZone slug comment =
 -- UPDATE
 
 
+{-| -}
 type Msg
     = ClickedDeleteArticle Cred Slug
     | ClickedDeleteComment Cred Slug CommentId
@@ -329,6 +336,7 @@ type Msg
     | PassedSlowLoadThreshold
 
 
+{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -508,6 +516,7 @@ update msg model =
 -- SUBSCRIPTIONS
 
 
+{-| -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Session.changes GotSession (Session.navKey model.session)
@@ -526,6 +535,7 @@ delete slug cred =
 -- EXPORT
 
 
+{-| -}
 toSession : Model -> Session
 toSession model =
     model.session

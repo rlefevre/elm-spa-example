@@ -1,5 +1,11 @@
 module CommentId exposing (CommentId, decoder, toString)
 
+{-|
+
+@docs CommentId, decoder, toString
+
+-}
+
 import Json.Decode as Decode exposing (Decoder)
 
 
@@ -7,6 +13,7 @@ import Json.Decode as Decode exposing (Decoder)
 -- TYPES
 
 
+{-| -}
 type CommentId
     = CommentId Int
 
@@ -15,6 +22,7 @@ type CommentId
 -- CREATE
 
 
+{-| -}
 decoder : Decoder CommentId
 decoder =
     Decode.map CommentId Decode.int
@@ -24,6 +32,7 @@ decoder =
 -- TRANSFORM
 
 
+{-| -}
 toString : CommentId -> String
 toString (CommentId id) =
     String.fromInt id

@@ -1,5 +1,11 @@
 module Page.Article.Editor exposing (Model, Msg, initEdit, initNew, subscriptions, toSession, update, view)
 
+{-|
+
+@docs Model, Msg, initEdit, initNew, subscriptions, toSession, update, view
+
+-}
+
 import Api exposing (Cred)
 import Api.Endpoint as Endpoint
 import Article exposing (Article, Full)
@@ -25,6 +31,7 @@ import Time
 -- MODEL
 
 
+{-| -}
 type alias Model =
     { session : Session
     , status : Status
@@ -57,6 +64,7 @@ type alias Form =
     }
 
 
+{-| -}
 initNew : Session -> ( Model, Cmd msg )
 initNew session =
     ( { session = session
@@ -72,6 +80,7 @@ initNew session =
     )
 
 
+{-| -}
 initEdit : Session -> Slug -> ( Model, Cmd Msg )
 initEdit session slug =
     ( { session = session
@@ -93,6 +102,7 @@ initEdit session slug =
 -- VIEW
 
 
+{-| -}
 view : Model -> { title : String, content : Html Msg }
 view model =
     { title =
@@ -238,6 +248,7 @@ saveArticleButton caption extraAttrs =
 -- UPDATE
 
 
+{-| -}
 type Msg
     = ClickedSave Cred
     | EnteredBody String
@@ -251,6 +262,7 @@ type Msg
     | PassedSlowLoadThreshold
 
 
+{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -434,6 +446,7 @@ updateForm transform model =
 -- SUBSCRIPTIONS
 
 
+{-| -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Session.changes GotSession (Session.navKey model.session)
@@ -564,6 +577,7 @@ edit articleSlug (Trimmed form) cred =
 -- EXPORT
 
 
+{-| -}
 toSession : Model -> Session
 toSession model =
     model.session

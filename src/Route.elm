@@ -1,5 +1,11 @@
 module Route exposing (Route(..), fromUrl, href, replaceUrl)
 
+{-|
+
+@docs Route, fromUrl, href, replaceUrl
+
+-}
+
 import Article.Slug as Slug exposing (Slug)
 import Browser.Navigation as Nav
 import Html exposing (Attribute)
@@ -14,6 +20,7 @@ import Username exposing (Username)
 -- ROUTING
 
 
+{-| -}
 type Route
     = Home
     | Root
@@ -46,16 +53,19 @@ parser =
 -- PUBLIC HELPERS
 
 
+{-| -}
 href : Route -> Attribute msg
 href targetRoute =
     Attr.href (routeToString targetRoute)
 
 
+{-| -}
 replaceUrl : Nav.Key -> Route -> Cmd msg
 replaceUrl key route =
     Nav.replaceUrl key (routeToString route)
 
 
+{-| -}
 fromUrl : Url -> Maybe Route
 fromUrl url =
     -- The RealWorld spec treats the fragment like a path.

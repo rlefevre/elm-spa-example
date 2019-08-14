@@ -1,5 +1,11 @@
 module PaginatedList exposing (PaginatedList, fromList, map, params, total, values)
 
+{-|
+
+@docs PaginatedList, fromList, map, params, total, values
+
+-}
+
 import Html exposing (Html, a, li, text, ul)
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
@@ -12,6 +18,7 @@ import Url.Builder exposing (QueryParameter)
 -- TYPES
 
 
+{-| -}
 type PaginatedList a
     = PaginatedList
         { values : List a
@@ -23,11 +30,13 @@ type PaginatedList a
 -- INFO
 
 
+{-| -}
 values : PaginatedList a -> List a
 values (PaginatedList info) =
     info.values
 
 
+{-| -}
 total : PaginatedList a -> Int
 total (PaginatedList info) =
     info.total
@@ -37,6 +46,7 @@ total (PaginatedList info) =
 -- CREATE
 
 
+{-| -}
 fromList : Int -> List a -> PaginatedList a
 fromList totalCount list =
     PaginatedList { values = list, total = totalCount }
@@ -46,6 +56,7 @@ fromList totalCount list =
 -- TRANSFORM
 
 
+{-| -}
 map : (a -> a) -> PaginatedList a -> PaginatedList a
 map transform (PaginatedList info) =
     PaginatedList { info | values = List.map transform info.values }

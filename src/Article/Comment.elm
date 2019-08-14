@@ -1,5 +1,11 @@
 module Article.Comment exposing (Comment, author, body, createdAt, delete, id, list, post)
 
+{-|
+
+@docs Comment, author, body, createdAt, delete, id, list, post
+
+-}
+
 import Api exposing (Cred)
 import Api.Endpoint as Endpoint
 import Article exposing (Article)
@@ -19,6 +25,7 @@ import Time
 -- TYPES
 
 
+{-| -}
 type Comment
     = Comment Internals
 
@@ -35,21 +42,25 @@ type alias Internals =
 -- INFO
 
 
+{-| -}
 id : Comment -> CommentId
 id (Comment comment) =
     comment.id
 
 
+{-| -}
 body : Comment -> String
 body (Comment comment) =
     comment.body
 
 
+{-| -}
 createdAt : Comment -> Time.Posix
 createdAt (Comment comment) =
     comment.createdAt
 
 
+{-| -}
 author : Comment -> Author
 author (Comment comment) =
     comment.author
@@ -59,6 +70,7 @@ author (Comment comment) =
 -- LIST
 
 
+{-| -}
 list : Maybe Cred -> Slug -> Http.Request (List Comment)
 list maybeCred articleSlug =
     Decode.field "comments" (Decode.list (decoder maybeCred))
@@ -69,6 +81,7 @@ list maybeCred articleSlug =
 -- POST
 
 
+{-| -}
 post : Slug -> String -> Cred -> Http.Request Comment
 post articleSlug commentBody cred =
     let
@@ -89,6 +102,7 @@ encodeCommentBody str =
 -- DELETE
 
 
+{-| -}
 delete : Slug -> CommentId -> Cred -> Http.Request ()
 delete articleSlug commentId cred =
     Api.delete (Endpoint.comment articleSlug commentId) cred Http.emptyBody (Decode.succeed ())

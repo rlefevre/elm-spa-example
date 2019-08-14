@@ -1,4 +1,27 @@
-module Session exposing (Session, changes, cred, fromViewer, navKey, viewer)
+module Session exposing
+    ( Session
+    , cred, navKey, viewer
+    , changes, fromViewer
+    )
+
+{-|
+
+
+# Types
+
+@docs Session
+
+
+# Info
+
+@docs cred, navKey, viewer
+
+
+# Changes
+
+@docs changes, fromViewer
+
+-}
 
 import Api exposing (Cred)
 import Avatar exposing (Avatar)
@@ -15,6 +38,7 @@ import Viewer exposing (Viewer)
 -- TYPES
 
 
+{-| -}
 type Session
     = LoggedIn Nav.Key Viewer
     | Guest Nav.Key
@@ -24,6 +48,7 @@ type Session
 -- INFO
 
 
+{-| -}
 viewer : Session -> Maybe Viewer
 viewer session =
     case session of
@@ -34,6 +59,7 @@ viewer session =
             Nothing
 
 
+{-| -}
 cred : Session -> Maybe Cred
 cred session =
     case session of
@@ -44,6 +70,7 @@ cred session =
             Nothing
 
 
+{-| -}
 navKey : Session -> Nav.Key
 navKey session =
     case session of
@@ -58,11 +85,13 @@ navKey session =
 -- CHANGES
 
 
+{-| -}
 changes : (Session -> msg) -> Nav.Key -> Sub msg
 changes toMsg key =
     Api.viewerChanges (\maybeViewer -> toMsg (fromViewer key maybeViewer)) Viewer.decoder
 
 
+{-| -}
 fromViewer : Nav.Key -> Maybe Viewer -> Session
 fromViewer key maybeViewer =
     -- It's stored in localStorage as a JSON String;

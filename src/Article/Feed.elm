@@ -1,5 +1,23 @@
 module Article.Feed exposing (Model, Msg, decoder, init, update, viewArticles, viewPagination, viewTabs)
 
+{-| NOTE: This module has its own Model, view, and update. This is not normal!
+If you find yourself doing this often, please watch <https://www.youtube.com/watch?v=DoA4Txr4GUs>
+
+This is the reusable Article Feed that appears on both the Home page as well as
+on the Profile page. There's a lot of logic here, so it's more convenient to use
+the heavyweight approach of giving this its own Model, view, and update.
+
+This means callers must use Html.map and Cmd.map to use this thing, but in
+this case that's totally worth it because of the amount of logic wrapped up
+in this thing.
+
+For every other reusable view in this application, this API would be totally
+overkill, so we use simpler APIs instead.
+
+@docs Model, Msg, decoder, init, update, viewArticles, viewPagination, viewTabs
+
+-}
+
 import Api exposing (Cred)
 import Article exposing (Article, Preview)
 import Article.Slug as ArticleSlug exposing (Slug)
@@ -24,27 +42,11 @@ import Url exposing (Url)
 import Username exposing (Username)
 
 
-{-| NOTE: This module has its own Model, view, and update. This is not normal!
-If you find yourself doing this often, please watch <https://www.youtube.com/watch?v=DoA4Txr4GUs>
-
-This is the reusable Article Feed that appears on both the Home page as well as
-on the Profile page. There's a lot of logic here, so it's more convenient to use
-the heavyweight approach of giving this its own Model, view, and update.
-
-This means callers must use Html.map and Cmd.map to use this thing, but in
-this case that's totally worth it because of the amount of logic wrapped up
-in this thing.
-
-For every other reusable view in this application, this API would be totally
-overkill, so we use simpler APIs instead.
-
--}
-
-
 
 -- MODEL
 
 
+{-| -}
 type Model
     = Model Internals
 
@@ -61,6 +63,7 @@ type alias Internals =
     }
 
 
+{-| -}
 init : Session -> PaginatedList (Article Preview) -> Model
 init session articles =
     Model
@@ -75,6 +78,7 @@ init session articles =
 -- VIEW
 
 
+{-| -}
 viewArticles : Time.Zone -> Model -> List (Html Msg)
 viewArticles timeZone (Model { articles, session, errors }) =
     let
@@ -146,6 +150,7 @@ viewPreview maybeCred timeZone article =
         ]
 
 
+{-| -}
 viewTabs :
     List ( String, msg )
     -> ( String, msg )
@@ -169,6 +174,7 @@ viewTab attrs ( name, msg ) =
         ]
 
 
+{-| -}
 viewPagination : (Int -> msg) -> Int -> Model -> Html msg
 viewPagination toMsg page (Model feed) =
     let
@@ -210,6 +216,7 @@ viewTag tagName =
 -- UPDATE
 
 
+{-| -}
 type Msg
     = ClickedDismissErrors
     | ClickedFavorite Cred Slug
@@ -217,6 +224,7 @@ type Msg
     | CompletedFavorite (Result Http.Error (Article Preview))
 
 
+{-| -}
 update : Maybe Cred -> Msg -> Model -> ( Model, Cmd Msg )
 update maybeCred msg (Model model) =
     case msg of
@@ -253,6 +261,7 @@ replaceArticle newArticle oldArticle =
 -- SERIALIZATION
 
 
+{-| -}
 decoder : Maybe Cred -> Int -> Decoder (PaginatedList (Article Preview))
 decoder maybeCred resultsPerPage =
     Decode.succeed PaginatedList.fromList

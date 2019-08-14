@@ -1,4 +1,27 @@
-module Avatar exposing (Avatar, decoder, encode, src, toMaybeString)
+module Avatar exposing
+    ( Avatar
+    , decoder
+    , encode, src, toMaybeString
+    )
+
+{-|
+
+
+# Types
+
+@docs Avatar
+
+
+# Create
+
+@docs decoder
+
+
+# Transform
+
+@docs encode, src, toMaybeString
+
+-}
 
 import Asset
 import Html exposing (Attribute)
@@ -11,6 +34,7 @@ import Json.Encode as Encode exposing (Value)
 -- TYPES
 
 
+{-| -}
 type Avatar
     = Avatar (Maybe String)
 
@@ -19,6 +43,7 @@ type Avatar
 -- CREATE
 
 
+{-| -}
 decoder : Decoder Avatar
 decoder =
     Decode.map Avatar (Decode.nullable Decode.string)
@@ -28,6 +53,7 @@ decoder =
 -- TRANSFORM
 
 
+{-| -}
 encode : Avatar -> Value
 encode (Avatar maybeUrl) =
     case maybeUrl of
@@ -38,6 +64,7 @@ encode (Avatar maybeUrl) =
             Encode.null
 
 
+{-| -}
 src : Avatar -> Attribute msg
 src (Avatar maybeUrl) =
     case maybeUrl of
@@ -51,6 +78,7 @@ src (Avatar maybeUrl) =
             Html.Attributes.src url
 
 
+{-| -}
 toMaybeString : Avatar -> Maybe String
 toMaybeString (Avatar maybeUrl) =
     maybeUrl

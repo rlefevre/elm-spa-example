@@ -4,6 +4,8 @@ module Profile exposing (Profile, avatar, bio, decoder)
 
 Contrast with Cred, which is the currently signed-in user.
 
+@docs Profile, avatar, bio, decoder
+
 -}
 
 import Api exposing (Cred)
@@ -18,6 +20,7 @@ import Username exposing (Username)
 -- TYPES
 
 
+{-| -}
 type Profile
     = Profile Internals
 
@@ -32,11 +35,13 @@ type alias Internals =
 -- INFO
 
 
+{-| -}
 bio : Profile -> Maybe String
 bio (Profile info) =
     info.bio
 
 
+{-| -}
 avatar : Profile -> Avatar
 avatar (Profile info) =
     info.avatar
@@ -46,6 +51,7 @@ avatar (Profile info) =
 -- SERIALIZATION
 
 
+{-| -}
 decoder : Decoder Profile
 decoder =
     Decode.succeed Internals

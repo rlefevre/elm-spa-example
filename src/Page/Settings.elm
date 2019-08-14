@@ -1,5 +1,11 @@
 module Page.Settings exposing (Model, Msg, init, subscriptions, toSession, update, view)
 
+{-|
+
+@docs Model, Msg, init, subscriptions, toSession, update, view
+
+-}
+
 import Api exposing (Cred)
 import Api.Endpoint as Endpoint
 import Avatar
@@ -26,6 +32,7 @@ import Viewer exposing (Viewer)
 -- MODEL
 
 
+{-| -}
 type alias Model =
     { session : Session
     , problems : List Problem
@@ -54,6 +61,7 @@ type Problem
     | ServerError String
 
 
+{-| -}
 init : Session -> ( Model, Cmd Msg )
 init session =
     ( { session = session
@@ -94,6 +102,7 @@ type ValidForm
 -- VIEW
 
 
+{-| -}
 view : Model -> { title : String, content : Html Msg }
 view model =
     { title = "Settings"
@@ -205,6 +214,7 @@ viewProblem problem =
 -- UPDATE
 
 
+{-| -}
 type Msg
     = SubmittedForm Cred Form
     | EnteredEmail String
@@ -218,6 +228,7 @@ type Msg
     | PassedSlowLoadThreshold
 
 
+{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -307,6 +318,7 @@ updateForm transform model =
 -- SUBSCRIPTIONS
 
 
+{-| -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Session.changes GotSession (Session.navKey model.session)
@@ -316,6 +328,7 @@ subscriptions model =
 -- EXPORT
 
 
+{-| -}
 toSession : Model -> Session
 toSession model =
     model.session

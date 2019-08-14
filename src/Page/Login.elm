@@ -1,6 +1,9 @@
 module Page.Login exposing (Model, Msg, init, subscriptions, toSession, update, view)
 
 {-| The login page.
+
+@docs Model, Msg, init, subscriptions, toSession, update, view
+
 -}
 
 import Api exposing (Cred)
@@ -21,6 +24,7 @@ import Viewer exposing (Viewer)
 -- MODEL
 
 
+{-| -}
 type alias Model =
     { session : Session
     , problems : List Problem
@@ -63,6 +67,7 @@ type alias Form =
     }
 
 
+{-| -}
 init : Session -> ( Model, Cmd msg )
 init session =
     ( { session = session
@@ -80,6 +85,7 @@ init session =
 -- VIEW
 
 
+{-| -}
 view : Model -> { title : String, content : Html Msg }
 view model =
     { title = "Login"
@@ -148,6 +154,7 @@ viewForm form =
 -- UPDATE
 
 
+{-| -}
 type Msg
     = SubmittedForm
     | EnteredEmail String
@@ -156,6 +163,7 @@ type Msg
     | GotSession Session
 
 
+{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -210,6 +218,7 @@ updateForm transform model =
 -- SUBSCRIPTIONS
 
 
+{-| -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Session.changes GotSession (Session.navKey model.session)
@@ -310,6 +319,7 @@ login (Trimmed form) =
 -- EXPORT
 
 
+{-| -}
 toSession : Model -> Session
 toSession model =
     model.session

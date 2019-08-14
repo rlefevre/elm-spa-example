@@ -1,6 +1,9 @@
 module Page.Home exposing (Model, Msg, init, subscriptions, toSession, update, view)
 
 {-| The homepage. You can get here via either the / or /#/ routes.
+
+@docs Model, Msg, init, subscriptions, toSession, update, view
+
 -}
 
 import Api exposing (Cred)
@@ -28,6 +31,7 @@ import Username exposing (Username)
 -- MODEL
 
 
+{-| -}
 type alias Model =
     { session : Session
     , timeZone : Time.Zone
@@ -53,6 +57,7 @@ type FeedTab
     | TagFeed Tag
 
 
+{-| -}
 init : Session -> ( Model, Cmd Msg )
 init session =
     let
@@ -89,6 +94,7 @@ init session =
 -- VIEW
 
 
+{-| -}
 view : Model -> { title : String, content : Html Msg }
 view model =
     { title = "Conduit"
@@ -228,6 +234,7 @@ viewTag tagName =
 -- UPDATE
 
 
+{-| -}
 type Msg
     = ClickedTag Tag
     | ClickedTab FeedTab
@@ -240,6 +247,7 @@ type Msg
     | PassedSlowLoadThreshold
 
 
+{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -381,6 +389,7 @@ scrollToTop =
 -- SUBSCRIPTIONS
 
 
+{-| -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Session.changes GotSession (Session.navKey model.session)
@@ -390,6 +399,7 @@ subscriptions model =
 -- EXPORT
 
 
+{-| -}
 toSession : Model -> Session
 toSession model =
     model.session

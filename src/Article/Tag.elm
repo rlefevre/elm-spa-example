@@ -1,5 +1,11 @@
 module Article.Tag exposing (Tag, list, toString)
 
+{-|
+
+@docs Tag, list, toString
+
+-}
+
 import Api exposing (Cred)
 import Api.Endpoint as Endpoint
 import Http
@@ -10,6 +16,7 @@ import Json.Decode as Decode exposing (Decoder)
 -- TYPES
 
 
+{-| -}
 type Tag
     = Tag String
 
@@ -18,6 +25,7 @@ type Tag
 -- TRANSFORM
 
 
+{-| -}
 toString : Tag -> String
 toString (Tag slug) =
     slug
@@ -27,6 +35,7 @@ toString (Tag slug) =
 -- LIST
 
 
+{-| -}
 list : Http.Request (List Tag)
 list =
     Decode.field "tags" (Decode.list decoder)

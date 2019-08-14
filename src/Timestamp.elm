@@ -1,5 +1,11 @@
 module Timestamp exposing (format, view)
 
+{-|
+
+@docs format, view
+
+-}
+
 import Html exposing (Html, span, text)
 import Html.Attributes exposing (class)
 import Json.Decode as Decode exposing (Decoder, fail, succeed)
@@ -10,6 +16,7 @@ import Time exposing (Month(..))
 -- VIEW
 
 
+{-| -}
 view : Time.Zone -> Time.Posix -> Html msg
 view timeZone timestamp =
     span [ class "date" ] [ text (format timeZone timestamp) ]

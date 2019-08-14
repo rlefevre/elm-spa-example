@@ -1,8 +1,39 @@
-port module Api exposing (Cred, addServerError, application, decodeErrors, delete, get, login, logout, post, put, register, settings, storeCredWith, username, viewerChanges)
+port module Api exposing
+    ( Cred, username
+    , storeCredWith, viewerChanges, logout
+    , application
+    , get, put, post, delete, login, register, settings
+    , addServerError, decodeErrors
+    )
 
 {-| This module is responsible for communicating to the Conduit API.
 
 It exposes an opaque Endpoint type which is guaranteed to point to the correct URL.
+
+
+# Cred
+
+@docs Cred, username
+
+
+# Persistence
+
+@docs storeCredWith, viewerChanges, logout
+
+
+# Application
+
+@docs application
+
+
+# HTTP
+
+@docs get, put, post, delete, login, register, settings
+
+
+# Errors
+
+@docs addServerError, decodeErrors
 
 -}
 
@@ -41,6 +72,7 @@ type Cred
     = Cred Username String
 
 
+{-| -}
 username : Cred -> Username
 username (Cred val _) =
     val
@@ -81,6 +113,7 @@ decode decoder value =
 port onStoreChange : (Value -> msg) -> Sub msg
 
 
+{-| -}
 viewerChanges : (Maybe viewer -> msg) -> Decoder (Cred -> viewer) -> Sub msg
 viewerChanges toMsg decoder =
     onStoreChange (\value -> toMsg (decodeFromChange decoder value))
@@ -95,6 +128,7 @@ decodeFromChange viewerDecoder val =
         |> Result.toMaybe
 
 
+{-| -}
 storeCredWith : Cred -> Avatar -> Cmd msg
 storeCredWith (Cred uname token) avatar =
     let
@@ -112,6 +146,7 @@ storeCredWith (Cred uname token) avatar =
     storeCache (Just json)
 
 
+{-| -}
 logout : Cmd msg
 logout =
     storeCache Nothing
@@ -125,6 +160,7 @@ port storeCache : Maybe Value -> Cmd msg
 -- APPLICATION
 
 
+{-| -}
 application :
     Decoder (Cred -> viewer)
     ->
@@ -166,6 +202,7 @@ storageDecoder viewerDecoder =
 -- HTTP
 
 
+{-| -}
 get : Endpoint -> Maybe Cred -> Decoder a -> Http.Request a
 get url maybeCred decoder =
     Endpoint.request
@@ -185,6 +222,7 @@ get url maybeCred decoder =
         }
 
 
+{-| -}
 put : Endpoint -> Cred -> Body -> Decoder a -> Http.Request a
 put url cred body decoder =
     Endpoint.request
@@ -198,6 +236,7 @@ put url cred body decoder =
         }
 
 
+{-| -}
 post : Endpoint -> Maybe Cred -> Body -> Decoder a -> Http.Request a
 post url maybeCred body decoder =
     Endpoint.request
@@ -217,6 +256,7 @@ post url maybeCred body decoder =
         }
 
 
+{-| -}
 delete : Endpoint -> Cred -> Body -> Decoder a -> Http.Request a
 delete url cred body decoder =
     Endpoint.request
@@ -230,16 +270,19 @@ delete url cred body decoder =
         }
 
 
+{-| -}
 login : Http.Body -> Decoder (Cred -> a) -> Http.Request a
 login body decoder =
     post Endpoint.login Nothing body (Decode.field "user" (decoderFromCred decoder))
 
 
+{-| -}
 register : Http.Body -> Decoder (Cred -> a) -> Http.Request a
 register body decoder =
     post Endpoint.users Nothing body (Decode.field "user" (decoderFromCred decoder))
 
 
+{-| -}
 settings : Cred -> Http.Body -> Decoder (Cred -> a) -> Http.Request a
 settings cred body decoder =
     put Endpoint.user cred body (Decode.field "user" (decoderFromCred decoder))
@@ -256,6 +299,7 @@ decoderFromCred decoder =
 -- ERRORS
 
 
+{-| -}
 addServerError : List String -> List String
 addServerError list =
     "Server error" :: list

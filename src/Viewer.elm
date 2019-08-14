@@ -1,8 +1,28 @@
-module Viewer exposing (Viewer, avatar, cred, decoder, minPasswordChars, store, username)
+module Viewer exposing
+    ( Viewer
+    , avatar, cred, minPasswordChars, username
+    , decoder, store
+    )
 
 {-| The logged-in user currently viewing this page. It stores enough data to
 be able to render the menu bar (username and avatar), along with Cred so it's
 impossible to have a Viewer if you aren't logged in.
+
+
+# Types
+
+@docs Viewer
+
+
+# Info
+
+@docs avatar, cred, minPasswordChars, username
+
+
+# Serialization
+
+@docs decoder, store
+
 -}
 
 import Api exposing (Cred)
@@ -19,6 +39,7 @@ import Username exposing (Username)
 -- TYPES
 
 
+{-| -}
 type Viewer
     = Viewer Avatar Cred
 
@@ -27,16 +48,19 @@ type Viewer
 -- INFO
 
 
+{-| -}
 cred : Viewer -> Cred
 cred (Viewer _ val) =
     val
 
 
+{-| -}
 username : Viewer -> Username
 username (Viewer _ val) =
     Api.username val
 
 
+{-| -}
 avatar : Viewer -> Avatar
 avatar (Viewer val _) =
     val
@@ -53,12 +77,14 @@ minPasswordChars =
 -- SERIALIZATION
 
 
+{-| -}
 decoder : Decoder (Cred -> Viewer)
 decoder =
     Decode.succeed Viewer
         |> custom (Decode.field "image" Avatar.decoder)
 
 
+{-| -}
 store : Viewer -> Cmd msg
 store (Viewer avatarVal credVal) =
     Api.storeCredWith

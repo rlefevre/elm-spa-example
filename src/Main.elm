@@ -1,5 +1,11 @@
 module Main exposing (main)
 
+{-|
+
+@docs main
+
+-}
+
 import Api exposing (Cred)
 import Article.Slug exposing (Slug)
 import Avatar exposing (Avatar)
@@ -323,6 +329,7 @@ subscriptions model =
 -- MAIN
 
 
+{-| -}
 main : Program Value Model Msg
 main =
     Api.application Viewer.decoder

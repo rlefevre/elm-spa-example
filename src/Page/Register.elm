@@ -1,5 +1,11 @@
 module Page.Register exposing (Model, Msg, init, subscriptions, toSession, update, view)
 
+{-|
+
+@docs Model, Msg, init, subscriptions, toSession, update, view
+
+-}
+
 import Api exposing (Cred)
 import Browser.Navigation as Nav
 import Html exposing (..)
@@ -18,6 +24,7 @@ import Viewer exposing (Viewer)
 -- MODEL
 
 
+{-| -}
 type alias Model =
     { session : Session
     , problems : List Problem
@@ -37,6 +44,7 @@ type Problem
     | ServerError String
 
 
+{-| -}
 init : Session -> ( Model, Cmd msg )
 init session =
     ( { session = session
@@ -55,6 +63,7 @@ init session =
 -- VIEW
 
 
+{-| -}
 view : Model -> { title : String, content : Html Msg }
 view model =
     { title = "Register"
@@ -132,6 +141,7 @@ viewProblem problem =
 -- UPDATE
 
 
+{-| -}
 type Msg
     = SubmittedForm
     | EnteredEmail String
@@ -141,6 +151,7 @@ type Msg
     | GotSession Session
 
 
+{-| -}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -198,6 +209,7 @@ updateForm transform model =
 -- SUBSCRIPTIONS
 
 
+{-| -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Session.changes GotSession (Session.navKey model.session)
@@ -207,6 +219,7 @@ subscriptions model =
 -- EXPORT
 
 
+{-| -}
 toSession : Model -> Session
 toSession model =
     model.session

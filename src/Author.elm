@@ -1,4 +1,9 @@
-module Author exposing (Author(..), FollowedAuthor, UnfollowedAuthor, decoder, fetch, follow, followButton, profile, requestFollow, requestUnfollow, unfollow, unfollowButton, username, view)
+module Author exposing
+    ( Author(..), FollowedAuthor, UnfollowedAuthor
+    , decoder, profile, username, view
+    , fetch
+    , follow, followButton, requestFollow, requestUnfollow, unfollow, unfollowButton
+    )
 
 {-| The author of an Article. It includes a Profile.
 
@@ -28,6 +33,19 @@ These types help the compiler prevent several mistakes:
   - Displaying either button when the author is ourself.
 
 There are still ways we could mess things up (e.g. make a button that calls Author.unfollow when you click it, but which displays "Follow" to the user) - but this rules out a bunch of potential problems.
+
+@docs Author, FollowedAuthor, UnfollowedAuthor
+@docs decoder, profile, username, view
+
+
+# Fetch
+
+@docs fetch
+
+
+# Following
+
+@docs follow, followButton, requestFollow, requestUnfollow, unfollow, unfollowButton
 
 -}
 
@@ -106,6 +124,7 @@ profile author =
 -- FETCH
 
 
+{-| -}
 fetch : Username -> Maybe Cred -> Http.Request Author
 fetch uname maybeCred =
     Decode.field "profile" (decoder maybeCred)
@@ -116,21 +135,25 @@ fetch uname maybeCred =
 -- FOLLOWING
 
 
+{-| -}
 follow : UnfollowedAuthor -> FollowedAuthor
 follow (UnfollowedAuthor uname prof) =
     FollowedAuthor uname prof
 
 
+{-| -}
 unfollow : FollowedAuthor -> UnfollowedAuthor
 unfollow (FollowedAuthor uname prof) =
     UnfollowedAuthor uname prof
 
 
+{-| -}
 requestFollow : UnfollowedAuthor -> Cred -> Http.Request Author
 requestFollow (UnfollowedAuthor uname _) cred =
     Api.post (Endpoint.follow uname) (Just cred) Http.emptyBody (followDecoder cred)
 
 
+{-| -}
 requestUnfollow : FollowedAuthor -> Cred -> Http.Request Author
 requestUnfollow (FollowedAuthor uname _) cred =
     Api.delete (Endpoint.follow uname)
@@ -144,6 +167,7 @@ followDecoder cred =
     Decode.field "profile" (decoder (Just cred))
 
 
+{-| -}
 followButton :
     (Cred -> UnfollowedAuthor -> msg)
     -> Cred
@@ -156,6 +180,7 @@ followButton toMsg cred ((UnfollowedAuthor uname _) as author) =
         uname
 
 
+{-| -}
 unfollowButton :
     (Cred -> FollowedAuthor -> msg)
     -> Cred
@@ -187,6 +212,7 @@ toggleFollowButton txt extraClasses msgWhenClicked uname =
 -- SERIALIZATION
 
 
+{-| -}
 decoder : Maybe Cred -> Decoder Author
 decoder maybeCred =
     Decode.succeed Tuple.pair
